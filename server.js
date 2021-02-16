@@ -1,14 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require("cors");
 
-const app = express();
+// Create express app
+ const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
-
-app.use(cors(corsOptions));
+//set port
+const PORT = process.env.PORT || 8080;
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
@@ -21,10 +18,12 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to SEGP application." });
 });
 
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
+//Require journal routes
+const journalRouts = require('../SEGPGroup9a-BackEnd/routes/journal.routes');
+
+//listen for requests
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
-});
+});  
   
 
