@@ -1,21 +1,73 @@
 const express = require('express')
-
 const router = express.Router()
+const Journal = require('../models/journal.model');
 
-const journalController =   require('../controllers/journal.controller');
+//routes
 
-// Retrieve all journals
-router.get('/', journalController.findAll);
+//Get's all post
+router.get('/', async (req, res) => {
+  try {
+    const journal = await Journal.find();
+    res.json(journal);
+  } catch (err) {
+    res.json({message: err })
+  }
+});
 
-// Create a new journal
-router.post('/', journalController.create);
+//Get a Specific post
+router.get('/:journalId', async (req,res) => {
+  try{
+    const journal = await Journal.findById(req.params.journalId);
+    res.json(journal);
+  } catch (err) {
+    res.json({message: err})
+  }
+});
 
-// Retrieve a single journal with id
-router.get('/:id', journalController.findById);
+//post a journal
+router.post('/', async (req, res) => {
+  const journal = new Journal({
+    content: req.body.content
+  });
+  try{
+   const savedJournal = await journal.save();
+    res.json(savedJournal);
+  } catch(err){
+    res.json({ message: err });
+  }
+});
 
-// Update a journal with id
-router.put('/:id', journalController.update);
+//Update a specific Journal
+router.patch('/:journalId', async (req,res) => {
+  try{
+    const updatedJournal = await Journal.updateOne(
+      {_id: req.params.journalId}, 
+      {$set:{content: req.body.content}}
+      );
+    res.json(updatedJournal);
+  }  catch(err){
+    res.json({ message: err });
+  }
+});
 
-// Delete a journal with id
-router.delete('/:id', journalController.delete);
+//Delete Journal
+router.delete('/delete', async (req, res) => {
+  try {
+    const removedJournal = await Journal.remove({ _id: req.params.journalID });
+    res.json(removedJournal);
+  } catch (err) {
+    res.json({ message: err});
+  }
+})
+
+//Delete a specific post
+router.delete('/:journalId', async (req, res) => {
+  try{
+    const removedJournal = await Journal.remove({_id: req.params.journalId})
+    res.json(removedJournal);
+  } catch (err){
+    res.json({message: err});
+  }
+})
+
 module.exports = router

@@ -1,6 +1,6 @@
 'use strict';
 
-const Journal = require('../model/journal.model');
+const Journal = require('../models/journal.model');
 
 exports.findAll = function(req, res) {
 
