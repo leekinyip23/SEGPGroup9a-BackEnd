@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 var journalRoute = require('./routes/journal.routes');
+var userRoute = require('./routes/user.routes');
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/journal', journalRoute);
+app.use('/user', userRoute); 
 
 //connection string to db
 const dbURI = 'mongodb+srv://SEGPdbUser:e-GRr9a998bZLhs@cluster0.o5eht.mongodb.net/SEGP?retryWrites=true&w=majority'

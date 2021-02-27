@@ -25,8 +25,9 @@ router.get('/:journalId', async (req,res) => {
 });
 
 //post a journal
-router.post('/', async (req, res) => {
+router.post('/add', async (req, res) => {
   const journal = new Journal({
+    UserId: req.body.userId,
     content: req.body.content
   });
   try{
@@ -38,7 +39,7 @@ router.post('/', async (req, res) => {
 });
 
 //Update a specific Journal
-router.patch('/:journalId', async (req,res) => {
+router.patch('/update/:journalId', async (req,res) => {
   try{
     const updatedJournal = await Journal.updateOne(
       {_id: req.params.journalId}, 
@@ -61,7 +62,7 @@ router.delete('/delete', async (req, res) => {
 })
 
 //Delete a specific post
-router.delete('/:journalId', async (req, res) => {
+router.delete('/delete/:journalId', async (req, res) => {
   try{
     const removedJournal = await Journal.remove({_id: req.params.journalId})
     res.json(removedJournal);
