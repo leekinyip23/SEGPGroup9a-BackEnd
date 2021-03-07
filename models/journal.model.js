@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const User = require('./user.model');
 
 //defines the structure of our documents
 const journalSchema = new Schema({
-  userId: [{ UserId: Number}],
-  content: [String ]
+  userId: {type: Number},
+  content: {type: String}
 },{timestamps: true});
 
 //provides an interface for schema to communicate with database collection 
 const Journal = mongoose.model('Journal', journalSchema)
 
-module.exports = Journal;
+module.exports = Journal;  

@@ -14,11 +14,27 @@ router.get('/', async (req, res) => {
       }
     });
 
+
+
 //post a user
 router.post('/add', async (req, res) => {
     const user = new User({
         username: req.body.username,
         password: req.body.password
+    });
+    try{
+        const savedUser = await user.save();
+        res.json(savedUser);
+    } catch(err){
+        res.json({ message: err });
+    }
+});
+
+//post a user
+router.post('/add', async (req, res) => {
+    const user = new User({
+        username: testUsername,
+        password: testPassword
     });
     try{
         const savedUser = await user.save();
