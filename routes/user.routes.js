@@ -4,19 +4,18 @@ const User = require('../models/user.model');
 
 //routes
 
-//Get User data
-router.get('/', async (req, res) => {
-    try{
-        const user = await User.find();
-        res.json(user);
-      } catch (err) {
-        res.json({message: err})
-      }
-    });
+//Get a User's details
+router.post('/fetch', async(req, res) => {
+  try{
+    const user = await User.find({username: req.body.username});
+    res.json(user);
+  }catch (err){
+    console.log('failed');
+    res.json({message: err});
+  }
+})
 
-
-
-//post a user
+//add a new user
 router.post('/add', async (req, res) => {
     const user = new User({
         username: req.body.username,
@@ -30,38 +29,22 @@ router.post('/add', async (req, res) => {
     }
 });
 
-//post a user
-router.post('/add', async (req, res) => {
-    const user = new User({
-        username: testUsername,
-        password: testPassword
-    });
-    try{
-        const savedUser = await user.save();
-        res.json(savedUser);
-    } catch(err){
-        res.json({ message: err });
-    }
-});
-
   //Update a specific User
-  router.patch('/:userId', async (req,res) => {
+  router.post('/update', async (req,res) => {
     try{
-      const updatedUser = await User.updateOne(
-        {_id: req.params.userId}, 
-        {$set:{username: req.body.username, password: req.body.password}}
-        );
+      const updatedUser = await User.where({_id: req.body._id}).updateOne({$set:{username: req.body.username, password: req.body.password}});
       res.json(updatedUser);
     }  catch(err){
+      console.log('failed');
       res.json({ message: err });
     }
   });
   
   //Delete a specific user
-  router.delete('/delete/:userId', async (req, res) => {
+  router.post('/delete', async (req, res) => {
     try{
-      const removedUser = await User.remove({_id: req.params.userId})
-      res.json(removedUser);
+      const deletedUser = await User.remove({_id: req.body._id})
+      res.json(deletedUser);
     } catch (err){
       res.json({message: err});
     }

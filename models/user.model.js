@@ -11,10 +11,7 @@ const userSchema = new Schema({
         type: String,
         trim: true,
         //required: true
-    },
-    journals:[{
-        type: Schema.ObjectId, ref: 'Journal'   //tells mongoose to look for journal schema. Linked to a single journal id.
-    }]
+    }
 },
     {timestamps: true});
 

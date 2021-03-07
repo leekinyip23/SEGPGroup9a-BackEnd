@@ -4,7 +4,7 @@ const Journal = require('../models/journal.model');
 
 //routes
 
-//get all user's journals
+//get all of a user's journals
 router.post('/fetch', async (req, res) => {
   try{
     const journal = await Journal.find({userId : req.body.userId}, 'content -_id');
