@@ -33,7 +33,7 @@ router.post('/add', async (req, res) => {
 //Update a User's Journal
 router.post('/update', async(req, res) => {
   try{
-    const updatedJournal = await Journal.where({userId: req.body.userId}).updateOne({$set: {content: req.body.content}});
+    const updatedJournal = await Journal.where({_Id: req.body._Id}).updateOne({$set: {content: req.body.content}});
     res.json(updatedJournal);
   }catch(err){
     console.log('failed');
@@ -44,7 +44,7 @@ router.post('/update', async(req, res) => {
 //Delete a User's journals
 router.post('/delete', async(req, res) => {
   try{
-    const deletedJournal = await Journal.remove({userId: req.body.userId});
+    const deletedJournal = await Journal.remove({_Id: req.body._Id});
     res.json(deletedJournal);
   }catch (err){
     res.json({message: err});
