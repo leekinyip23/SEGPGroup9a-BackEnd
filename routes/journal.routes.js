@@ -7,20 +7,21 @@ const Journal = require('../models/journal.model');
 //get all of a user's journals
 router.post('/fetch', async (req, res) => {
   try{
-    const journal = await Journal.find({userId : req.body.userId}, 'content -_id');
-    console.log('abc');
+    const journal = await Journal.find({_id : req.body._id});
     res.json(journal);
   } catch (err) {
     console.log("failed");
     res.json({message: err})
   }
 })
-
+  
 //post a journal
 router.post('/add', async (req, res) => {
   const journal = new Journal({  
     userId: req.body.userId,
-    content: req.body.content
+    title: req.body.title,
+    body: req.body.body,
+    mood: req.body.mood
   });
   try{
    const savedJournal = await journal.save();
@@ -33,7 +34,7 @@ router.post('/add', async (req, res) => {
 //Update a User's Journal
 router.post('/update', async(req, res) => {
   try{
-    const updatedJournal = await Journal.where({_Id: req.body._Id}).updateOne({$set: {content: req.body.content}});
+    const updatedJournal = await Journal.where({_id: req.body._id}).updateOne({$set: {title: req.body.title, body: req.body.body, mood: req.body.mood}});
     res.json(updatedJournal);
   }catch(err){
     console.log('failed');
@@ -44,10 +45,10 @@ router.post('/update', async(req, res) => {
 //Delete a User's journals
 router.post('/delete', async(req, res) => {
   try{
-    const deletedJournal = await Journal.remove({_Id: req.body._Id});
+    const deletedJournal = await Journal.deleteMany({_Id: req.body._Id});
     res.json(deletedJournal);
   }catch (err){
-    res.json({message: err});
+    res.json({message: err});  
   }
 })
 

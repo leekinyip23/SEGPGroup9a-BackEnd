@@ -2,6 +2,7 @@ const User = require("../models/user.model");
 
 checkDuplicateUsername = (req, res, next) => {
   // Username
+  console.log('in');
   User.findOne({
     username: req.body.username
   }).exec((err, user) => {

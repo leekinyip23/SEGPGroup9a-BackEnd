@@ -7,7 +7,6 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
-    email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
   });
 
@@ -23,7 +22,6 @@ exports.signin = (req, res) => {
   User.findOne({
     username: req.body.username
   })
-    .populate("roles", "-__v")
     .exec((err, user) => {
       if (err) {
         res.status(500).send({ message: err });
@@ -46,7 +44,8 @@ exports.signin = (req, res) => {
         });
       }
 
-      var token = jwt.sign({ id: user.id }, config.secret, {
+      //takes the payload and serialzie the user object.
+      var token = jwt.sign({ _id: user._id }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
 

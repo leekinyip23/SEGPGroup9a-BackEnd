@@ -8,3 +8,4 @@
 module.exports = {
     secret: "bezkoder-secret-key"
   };
+  //JWT is encoded and serialized and signed with it's own secret key.

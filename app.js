@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
 
 app.use('/journal', journalRoute);
 app.use('/user', userRoute); 
+app.use('/api', authRoute);
 
 
 //connection string to db

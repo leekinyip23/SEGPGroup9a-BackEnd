@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 });
 
 //Require journal routes
-const journalRouts = require('../SEGPGroup9a-BackEnd/routes/journal.routes');
+const journalRoutes = require('../SEGPGroup9a-BackEnd/routes/journal.routes');
 
 //listen for requests
 app.listen(PORT, () => {
