@@ -8,6 +8,7 @@ const cors = require('cors');
 var journalRoute = require('./routes/journal.routes');
 var userRoute = require('./routes/user.routes');
 var authRoute = require('./routes/auth.routes');
+var chatbotRoute = require('./routes/dialogflow.routes') ;
 
 var app = express();
 
@@ -27,9 +28,9 @@ app.get('/', (req, res) => {
 })
 
 app.use('/journal', journalRoute);
-app.use('/user', userRoute); 
+app.use('/user', userRoute);
 app.use('/api', authRoute);
-
+app.use('/chatbot', chatbotRoute) ;
 
 //connection string to db
 const dbURI = 'mongodb+srv://SEGPdbUser:e-GRr9a998bZLhs@cluster0.o5eht.mongodb.net/SEGP?retryWrites=true&w=majority'
@@ -40,6 +41,6 @@ connectDB();
 //listen for requests
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
-}); 
+});
 
 module.exports = app;
