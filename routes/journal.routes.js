@@ -45,7 +45,7 @@ router.post('/update', async(req, res) => {
 //Delete a User's journals
 router.post('/delete', async(req, res) => {
   try{
-    const deletedJournal = await Journal.deleteMany({_Id: req.body._Id});
+    const deletedJournal = await Journal.deleteMany({_id: req.body._id});
     res.json(deletedJournal);
   }catch (err){
     res.json({message: err});  
