@@ -1,87 +1,71 @@
+const sessionId = uuid.v4();
 const dialogflow = require('@google-cloud/dialogflow');
 const uuid = require('uuid');
-const { json } = require('body-parser');
-//const { router } = require('../app');
+const express = require('express');
+const router = express.Router();
+const bodyParser = require('body-parser')
+const app = express()
+const port = 5000
+
+// A unique identifier for the given session
 const sessionId = uuid.v4();
-router.use(bodyParser.urlencoded({
-    extended: true
 
-router.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
 
+app.use(function (req, res, next) {
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
 });
 
-                mood = 0
-            } else if (data.intent.displayName.includes("Positive")) {
-                mood = 1
-            }
-
-            if (data.intent.displayName === "Negative-Share(Yes)" ||
-                data.intent.displayName === "Negative-Share(Yes)-ContinueShare(Yes)" ||
-                data.intent.displayName === "Neutral(No)-Journal(Yes)" ||
-                data.intent.displayName === "Positive-Share(Yes)"
-
-            ) {
-                isSaveJournal = true
-            }
-
-            if (data.intent.displayName === "Negative-Share(Yes)-ContinueShare(Yes)-Journal(Yes)-End" ||
-                data.intent.displayName === "Negative-Share(Yes)-ContinueShare(No)-Journal(Yes)-End" ||
-                data.intent.displayName === "Neutral(No)-Journal(Yes)-End" ||
-                data.intent.displayName === "Positive-Share(Yes)-Journal(Yes)-End"
-            ) {
-                isSaveToDB = true
-            }
-
-            res.send({
-                message: data.fulfillmentMessages,
-                mood: mood,
-                isSaveJournal: isSaveJournal,
-                isSaveToDB: isSaveToDB
-            })
-            // res.json({
-            //     "message": `${data}`
-            // })
-        })
-        .catch(err => {
-            console.log("Error!")
-            res.send({
-                error: err
-            })
-        })
+router.post('/send-msg', (req, res) => {
+    runSample(req.body.text).then(data => {
+        res.send(data)
+    })
 })
 
-async function dialogflowConnection(msg, isEvent, projectId = 'mental-health-care-chatbo-rqfi') {
-    const sessionClient = new dialogflow.SessionsClient({
-        keyFilename: "./mental-health-care-chatbo-rqfi-e3c6ef10a30c.json"
-    });
+app.get('/', (req, res) => {
+    res.send("HELLO")
+})
 
+/**
+ * Send a query to the dialogflow agent, and return the query result.
+ * @param {string} projectId The project to be used
+ */
+async function runSample(msg, projectId = 'mental-health-care-chatbo-rqfi') {
+
+    // Create a new session
+    const sessionClient = new dialogflow.SessionsClient({
+        keyFilename: "../SEGPGroup9a-FrontEnd/mental-health-care-chatbo-rqfi-e3c6ef10a30c.json"
+    });
     const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
 
-    let request = {
+    // The text query request.
+    const request = {
         session: sessionPath,
         queryInput: {
             text: {
+                // The query to send to the dialogflow agent
                 text: msg,
-                languageCode: 'en-US'
+                // The language used by the client (en-US)
+                languageCode: 'en-US',
             },
+            /*
+                        event: {
+                            name: "GG",
+                            languageCode: 'en-US'
+                        },*/
         },
-    }
+    };
 
-    if (isEvent === "true") {
-        request = {
-            session: sessionPath,
-            queryInput: {
-                event: {
-                    name: msg,
-                    languageCode: 'en-US',
-                },
-            },
-        }
-    }
-
-    console.log("******************************************************************")
-    console.log(request)
-
+    // Send request and log result
     const responses = await sessionClient.detectIntent(request);
     console.log('Detected intent');
     const result = responses[0].queryResult;
@@ -93,7 +77,11 @@ async function dialogflowConnection(msg, isEvent, projectId = 'mental-health-car
         console.log(`  No intent matched.`);
     }
 
-    return result;
+    return result.fulfillmentText;
 }
+
+app.listen(port, () => {
+    console.log("running on port " + port)
+})
 
 module.exports = router
