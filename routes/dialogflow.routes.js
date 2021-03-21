@@ -83,7 +83,7 @@ router.post('/send-msg', (req, res) => {
 
 async function dialogflowConnection(msg, isEvent, projectId = 'mental-health-care-chatbo-rqfi') {
     const sessionClient = new dialogflow.SessionsClient({
-        keyFilename: "./mental-health-care-chatbo-rqfi-e3c6ef10a30c.json"
+        keyFilename: "./config/mental-health-care-chatbo-rqfi-e3c6ef10a30c.json"
     });
 
     const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
