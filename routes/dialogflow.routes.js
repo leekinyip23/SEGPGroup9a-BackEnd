@@ -26,6 +26,7 @@ router.use(function (req, res, next) {
 
 router.post('/send-msg', (req, res) => {
 
+    console.log('abc');
     dialogflowConnection(req.body.text, req.body.isEvent)
         .then(data => {
 

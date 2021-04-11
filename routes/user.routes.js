@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
     if(await bcrypt.compare(req.body.password, user.password)){
       res.json({_id: user._id, username: user.username});
     } else {
-      res.send('failure');
+      res.json({message: "User Authentication Failed"});
     }
   } catch {
     res.status(500).send();
