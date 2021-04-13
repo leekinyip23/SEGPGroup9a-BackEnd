@@ -23,6 +23,10 @@ router.post('/add', async (req, res) => {
 
     const user = new User({
         username: req.body.username,
+        nickname: req.body.nickname,
+        age: req.body.age,
+        gender: req.body.gender,
+        location: req.body.location,
         password: hashedPassword
     });
     try{
@@ -51,11 +55,23 @@ router.post('/login', async (req, res) => {
   }
 })
 
+//Update a specific nickname
+router.post('/updateNickname', async (req,res) => {
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  try{
+    const updatedUser = await User.where({nickname: req.body.nickname}).updateOne({$set:{username: req.body.username, age: req.body.age, gender: req.body.gender, location: req.body.location, password: hashedPassword}});
+    res.json(updatedUser);
+  }  catch(err){
+    console.log('failed');
+    res.json({ message: err });
+  }
+});
+
   //Update a specific User
-  router.post('/update', async (req,res) => {
+  router.post('/updateid', async (req,res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     try{
-      const updatedUser = await User.where({_id: req.body._id}).updateOne({$set:{username: req.body.username, password: hashedPassword}});
+      const updatedUser = await User.where({_id: req.body._id}).updateOne({$set:{username: req.body.username, nickname: req.body.nickname,age: req.body.age, gender: req.body.location, location: req.body.location, password: hashedPassword}});
       res.json(updatedUser);
     }  catch(err){
       console.log('failed');

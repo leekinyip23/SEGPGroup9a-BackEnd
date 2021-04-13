@@ -12,7 +12,7 @@ const connectDB = async()=>{
     useNewUrlParser: true, 
     useUnifiedTopology: true
    });
-  console.log('issa connect bitch');
+  console.log('connected to database');
 }
 
 module.exports = connectDB;
