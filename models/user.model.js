@@ -5,22 +5,22 @@ const Schema = mongoose.Schema;
 //
 const userSchema = new Schema({
     username: {
-        type: String
+        type: String, default: null
     },
     nickname: {
-        type: String
+        type: String, default: null
     },
     age: {
-        type: Number
+        type: Number, default: null
     },
     gender: {
-        type: Boolean
+        type: Boolean, default: null
     },
     location: {
-        type: String
+        type: String, default: null
     },
     password: {
-        type: String
+        type: String, default: null
     }
 },
     {timestamps: true});
