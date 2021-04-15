@@ -3,7 +3,6 @@ const uuid = require('uuid');
 const express = require('express');
 const bodyParser = require('body-parser');
 const { json } = require('body-parser');
-//const { router } = require('../app');
 const router = express.Router();
 const sessionId = uuid.v4();
 
@@ -20,59 +19,18 @@ router.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
-    // Pass to next layer of middleware
     next();
 });
 
 router.post('/send-msg', (req, res) => {
 
-    console.log('abc');
     dialogflowConnection(req.body.text, req.body.isEvent)
         .then(data => {
 
-            // if (isSaveJournal) {
-            //     functionToSaveToMongoDB(req.body.message)
-
-            //     isSaveJournal = false;
-            // }
-            let mood = 2;
-            let isSaveJournal = false;
-            let isSaveToDB = false;
-
-            if (data.intent.displayName.includes("Negative")) {
-                mood = -1
-            } else if (data.intent.displayName.includes("Neutral")) {
-                mood = 0
-            } else if (data.intent.displayName.includes("Positive")) {
-                mood = 1
-            }
-
-            if (data.intent.displayName === "Negative-Share(Yes)" ||
-                data.intent.displayName === "Negative-Share(Yes)-ContinueShare(Yes)" ||
-                data.intent.displayName === "Neutral(No)-Journal(Yes)" ||
-                data.intent.displayName === "Positive-Share(Yes)"
-
-            ) {
-                isSaveJournal = true
-            }
-
-            if (data.intent.displayName === "Negative-Share(Yes)-ContinueShare(Yes)-Journal(Yes)-End" ||
-                data.intent.displayName === "Negative-Share(Yes)-ContinueShare(No)-Journal(Yes)-End" ||
-                data.intent.displayName === "Neutral(No)-Journal(Yes)-End" ||
-                data.intent.displayName === "Positive-Share(Yes)-Journal(Yes)-End"
-            ) {
-                isSaveToDB = true
-            }
-
             res.send({
-                message: data.fulfillmentMessages,
-                mood: mood,
-                isSaveJournal: isSaveJournal,
-                isSaveToDB: isSaveToDB
+                message: data.fulfillmentMessages[0].text.text[0],
+                intent: data.intent.displayName
             })
-            // res.json({
-            //     "message": `${data}`
-            // })
         })
         .catch(err => {
             console.log("Error!")
