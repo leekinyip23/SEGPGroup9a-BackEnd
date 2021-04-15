@@ -4,18 +4,19 @@ const User = require('./user.model');
 
 //defines the structure of our documents
 const journalSchema = new Schema({
-  // journal: [
-  //   {
-  //     userId: String,
-  //     title: String,
-  //     body: String,
-  //     mood: Number
-  //   }
-  // ]
-  userId: String,
-  title: String, 
-  body: String,
-  mood: Number
+
+  userId: {
+    type: String, default: null
+  },
+  title: {
+    type: String, default: null
+  },
+  body: { 
+    type: String, default: null
+  },
+  mood:{
+    type: Number, default: null
+  }
 },{timestamps: true});
 
 //provides an interface for schema to communicate with database collection 
