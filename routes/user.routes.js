@@ -57,7 +57,7 @@ router.post('/login', async (req, res) => {
 
   //Update a specific User
   router.post('/updateId', async(req,res) => {
-    const user = await User.findOne({username: req.body.username}).exec();
+    const user = await User.findOne({_id: req.body._id}).exec();
     console.log(user);
     if(user == null){
       console.log('null');
