@@ -65,7 +65,7 @@ router.post('/login', async (req, res) => {
     }
     try{
       if(await bcrypt.compare(req.body.password, user.password)){
-      const updatedUser = await User.where({_id: req.body._id}).updateOne({$set:{username: req.body.username, nickname: req.body.nickname,age: req.body.age, gender: req.body.gender, location: req.body.location, password: user.password}});
+      const updatedUser = await User.where({_id: req.body._id}).updateOne({$set:{nickname: req.body.nickname,age: req.body.age, gender: req.body.gender, location: req.body.location, password: user.password}});
       res.json(updatedUser);
     }  else {
       res.json({message: "User Authentication Failed"});
