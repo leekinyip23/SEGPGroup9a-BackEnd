@@ -57,7 +57,12 @@ router.post('/login', async (req, res) => {
 
   //Update a specific User
   router.post('/updateId', async(req,res) => {
-
+    const user = await User.findOne({username: req.body.username}).exec();
+    console.log(user);
+    if(user == null){
+      console.log('null');
+      res.json({ message: "Cannot find user" });
+    }
     try{
       if(await bcrypt.compare(req.body.password, user.password)){
       const updatedUser = await User.where({_id: req.body._id}).updateOne({$set:{username: req.body.username, nickname: req.body.nickname,age: req.body.age, gender: req.body.gender, location: req.body.location, password: req.body.password}});
