@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
   router.post('/updateId', async(req,res) => {
 
     try{
-      const updatedUser = await User.where({_id: req.body._id}).updateOne({$set:{username: req.body.username, nickname: req.body.nickname,age: req.body.age, gender: req.body.gender, location: req.body.location, password: req.body.Password}});
+      const updatedUser = await User.where({_id: req.body._id}).updateOne({$set:{username: req.body.username, nickname: req.body.nickname,age: req.body.age, gender: req.body.gender, location: req.body.location, password: req.body.hashedPassword}});
       res.json(updatedUser);
     }  catch(err){
       console.log('failed');
