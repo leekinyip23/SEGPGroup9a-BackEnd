@@ -14,7 +14,7 @@ const userSchema = new Schema({
         type: Number, default: null
     },
     gender: {
-        type: Boolean, default: null
+        type: String, default: null
     },
     location: {
         type: String, default: null
